@@ -56,7 +56,18 @@ module.exports = function(app){
                         return done(err);
                     }
                     if (!user) {
-                        return done(null,false,'user not found');
+                        user = new User({
+                            name: profile.displayName,
+                            access_tokens:{
+                                userId:params.user_id,
+                                client:'vk',
+                                token:params.access_token
+                            }
+                        });
+                        user.save(function(err) {
+                            if (err) debug(err);
+                            return done(err, user.meta);
+                        });
                     } else {
                         for(i=0;i<user.access_tokens.length;i++){
                             if(user.access_tokens[i].client === 'vk'){

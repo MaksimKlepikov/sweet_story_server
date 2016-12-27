@@ -12,19 +12,29 @@ var User = function (app, socket) {
     this.socket = socket;
 
     this.handler = {
-        getUsers: getUsers.bind(this),
+        getRecords: getRecords.bind(this),
         getUsersMeta: getUsersMeta.bind(this),
         getUser: getUser.bind(this),
         addUser: addUser.bind(this),
         deleteUser: deleteUser.bind(this),
+        getProgress: getProgress.bind(this),
+        updateProgress: updateProgress.bind(this),
+        updateProgressOnHill: updateProgressOnHill.bind(this),
+        updateLevel: updateLevel.bind(this),
+        updateBestScore: updateBestScore.bind(this),
         // logout: logout.bind(this)
     };
 }
 
 // Events
 
-function getUsers(callback) {
-    callback(this.socket.request.user.Users || []);
+function getRecords(callback) {
+    UserModel.find()
+        .select("-access_tokens -level -progress -updateDate")
+        .sort('-bestScore')
+        .exec(function(err, users) {
+            callback(users || []);
+    });
 };
 function getUsersMeta(callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
@@ -35,7 +45,7 @@ function getUsersMeta(callback) {
 function getUser(callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
-        callback(user.meta);
+        callback(user.data);
     });
 };
 function addUser(name) {
@@ -61,6 +71,77 @@ function deleteUser(name) {
             self.socket.emit('updateUser', user.UsersMeta);
         }
     );
+};
+function getProgress(callback) {
+    UserModel.findById(this.socket.request.user.id, function (err, user) {
+        if(err) console.log(err);
+        callback(user.progress);
+    });
+};
+function updateProgress(progress, callback) {
+    UserModel.findById(this.socket.request.user.id, function (err, user) {
+        if(err) console.log(err);
+        if(user.progress.length>0){
+            user.progress.forEach(function (hill, index) {
+                if(progress[index].done>hill.done){
+                    hill.done = progress[index].done
+                }
+            });
+        }
+        else{
+            user.progress = progress
+        }
+
+        user.updateDate = Date.now();
+        user.save(function (err) {
+            if (err) console(err);
+            callback(user.updateDate, err);
+        })
+
+    });
+};
+function updateProgressOnHill(progressOnHill, callback) {
+    UserModel.findById(this.socket.request.user.id, function (err, user) {
+        if(err) console.log(err);
+        user.progress.forEach(function (hill, index) {
+            if(progressOnHill.name===hill.name){
+                hill.done = progressOnHill.done
+                return
+            }
+        });
+        user.updateDate = Date.now();
+        user.save(function (err) {
+            if (err) console(err);
+            callback(user.updateDate, err);
+        })
+
+    });
+};
+function updateLevel(level, callback) {
+    UserModel.findById(this.socket.request.user.id, function (err, user) {
+        if(err) console.log(err);
+        user.level=level
+
+        user.updateDate = Date.now();
+        user.save(function (err) {
+            if (err) console(err);
+            callback(user.updateDate, err);
+        })
+
+    });
+};
+function updateBestScore(bestScore, callback) {
+    UserModel.findById(this.socket.request.user.id, function (err, user) {
+        if(err) console.log(err);
+        user.bestScore=bestScore
+
+        user.updateDate = Date.now();
+        user.save(function (err) {
+            if (err) console(err);
+            callback(user.updateDate, err);
+        })
+
+    });
 };
 // function logout() {
 //     debug("user logout");
