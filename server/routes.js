@@ -1,5 +1,9 @@
 /**
  * Created by kevrat on 16.10.2016.
+ * Server routes
+ * @param app - ref to app
+ * @param server - ref to server
+ * @param store - ref to mongo store
  */
 module.exports = function (app, server, store) {
     var path = require('path'),

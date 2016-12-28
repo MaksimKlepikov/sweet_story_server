@@ -1,5 +1,10 @@
 /**
  * Created by kevrat on 06.10.2016.
+ * Database
+ * @param app - ref to app
+ * @param passport_config - ref to passport_config module
+ * @param routes - ref to server routes
+ * @param server - ref to server
  */
 module.exports = function(app,passport_config,routes,server){
     var config = require("./config"),

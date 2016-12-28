@@ -1,5 +1,8 @@
 /**
  * Created by kevrat on 16.10.2016.
+ * Configuration passport
+ * @param app - ref to passport
+ * @return module
  */
 
 module.exports = function(app){

@@ -6,6 +6,12 @@ var path = require('path');
 var io = require('socket.io')
 var UserModel = require(path.resolve('server/models/user')).UserModel;
 var Session = require(path.resolve('server/models/session')).SessionModel;
+/**
+ * Event handler for user
+ * @param app - ref to app
+ * @param socket - ref to socket
+ * @constructor
+ */
 var User = function (app, socket) {
 
     this.app = app;
@@ -36,18 +42,30 @@ function getRecords(callback) {
             callback(users || []);
     });
 };
+/**
+ * Get user meta information (see user schema)
+ * @param callback
+ */
 function getUsersMeta(callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
         callback(user.UsersMeta);
     });
 };
+/**
+ * Get user data (see user schema)
+ * @param callback
+ */
 function getUser(callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
         callback(user.data);
     });
 };
+/**
+ * Add user to db
+ * @param name
+ */
 function addUser(name) {
     self = this;
     UserModel.findByIdAndUpdate(
@@ -60,6 +78,10 @@ function addUser(name) {
         }
     );
 };
+/**
+ * Delete user from db
+ * @param name
+ */
 function deleteUser(name) {
     self = this;
     UserModel.findByIdAndUpdate(
@@ -72,12 +94,21 @@ function deleteUser(name) {
         }
     );
 };
+/**
+ * Get user progress (see user schema)
+ * @param callback
+ */
 function getProgress(callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
         callback(user.progress);
     });
 };
+/**
+ * Update user progress
+ * @param progress
+ * @param callback
+ */
 function updateProgress(progress, callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
@@ -100,6 +131,11 @@ function updateProgress(progress, callback) {
 
     });
 };
+/**
+ * Update user progress on hill
+ * @param progressOnHill
+ * @param callback
+ */
 function updateProgressOnHill(progressOnHill, callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
@@ -117,6 +153,11 @@ function updateProgressOnHill(progressOnHill, callback) {
 
     });
 };
+/**
+ * Update user level
+ * @param level
+ * @param callback
+ */
 function updateLevel(level, callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);
@@ -130,6 +171,11 @@ function updateLevel(level, callback) {
 
     });
 };
+/**
+ * Update user best score
+ * @param bestScore
+ * @param callback
+ */
 function updateBestScore(bestScore, callback) {
     UserModel.findById(this.socket.request.user.id, function (err, user) {
         if(err) console.log(err);

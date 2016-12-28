@@ -2,6 +2,9 @@
  * Created by kevrat on 06.10.2016.
  */
 var mongoose = require('mongoose');
+/**
+ * User schema
+ */
 Schema = mongoose.Schema,
 
     User = new Schema({
