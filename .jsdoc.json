@@ -1,0 +1,20 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
+  "opts": {
+    "destination": "./docs/",
+    "template": "node_modules/minami"
+  },
+  "source": {
+    "include": [
+      "server",
+      "server/db",
+      "server/EventHandlers",
+      "server/models",
+      "package.json"],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  }
+}
