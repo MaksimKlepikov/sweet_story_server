@@ -125,7 +125,7 @@ function updateProgress(progress, callback) {
 
         user.updateDate = Date.now();
         user.save(function (err) {
-            if (err) console(err);
+            if (err) console.log(err);
             callback(user.updateDate, err);
         })
 
@@ -147,7 +147,7 @@ function updateProgressOnHill(progressOnHill, callback) {
         });
         user.updateDate = Date.now();
         user.save(function (err) {
-            if (err) console(err);
+            if (err) console.log(err);
             callback(user.updateDate, err);
         })
 
@@ -165,7 +165,7 @@ function updateLevel(level, callback) {
 
         user.updateDate = Date.now();
         user.save(function (err) {
-            if (err) console(err);
+            if (err) console.log(err);
             callback(user.updateDate, err);
         })
 
@@ -183,7 +183,7 @@ function updateBestScore(bestScore, callback) {
 
         user.updateDate = Date.now();
         user.save(function (err) {
-            if (err) console(err);
+            if (err) console.log(err);
             callback(user.updateDate, err);
         })
 
