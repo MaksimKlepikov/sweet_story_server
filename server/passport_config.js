@@ -25,12 +25,12 @@ module.exports = function(app){
 
     passport.serializeUser(function(user, done) {
         debug("serializeUser " + user.id);
-        done(null, user.id);
+        done(null, {'id':user.id, 'test':1});
     });
 
-    passport.deserializeUser(function(userId, done) {
-        debug("deserializeUser " + userId);
-        User.findById(userId,function (err, user) {
+    passport.deserializeUser(function(user, done) {
+        debug("deserializeUser " + user.id);
+        User.findById(user.id,function (err, user) {
             if(err){
                 done(err);
             }
